@@ -1,0 +1,92 @@
+/* MOBILE 320+ */
+.grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 1fr;
+}
+
+.card {
+    background-color: #eaf6fb;
+    border-radius: 20px;
+    padding: 20px;
+    position: relative;
+}
+
+.avatar {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.name {
+    margin-top: 80px;
+    font-weight: 600;
+}
+
+.description {
+    margin-top: 12px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.profileBtn {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 8px 16px;
+    background-color: #d8edf7;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.profileBtn:hover {
+    background-color: #c4e3f2;
+}
+
+/* 375+ */
+@media (min-width: 375px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 768+ */
+@media (min-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 1440+ */
+@media (min-width: 1440px) {
+    .grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.loadMore {
+    display: block;
+    margin: 32px auto;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.loadMore:hover {
+    opacity: 0.85;
+}
+
+.loader {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.error {
+    text-align: center;
+    color: red;
+    margin-top: 20px;
+}

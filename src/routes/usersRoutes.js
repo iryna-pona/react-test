@@ -1,12 +1,16 @@
 import { Router } from "express";
 import { celebrate } from "celebrate";
-import { getUserById } from "../controllers/usersController.js";
+import { getUsers, getUserById } from "../controllers/usersController.js";
 import { getUserByIdSchema } from "../validations/userValidation.js";
 
 const router = Router();
 
+router.get("/users",
+  celebrate(paginationQuerySchema),
+  getUsers);
+
 router.get(
-  "/user/:id",
+  "/users/:_id",
   celebrate(getUserByIdSchema),
   getUserById
 );

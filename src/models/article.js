@@ -1,6 +1,6 @@
 import { Schema, model, Types } from "mongoose";
 
-const travellerSchema = new Schema(
+const articleSchema = new Schema(
   {
     img: {
       type: String,
@@ -42,4 +42,4 @@ const travellerSchema = new Schema(
   }
 );
 
-export const Traveller = model("Traveller", travellerSchema);
+export const Article = model("Article", articleSchema);

@@ -2,15 +2,15 @@ import { Joi, Segments } from "celebrate";
 
 export const getUserByIdSchema = {
   [Segments.PARAMS]: Joi.object({
-    id: Joi.string()
+    _id: Joi.string()
       .length(24)
       .hex()
       .required()
       .messages({
-        "string.base": "ID користувача має бути рядком",
-        "string.length": "ID користувача повинен містити 24 символи",
-        "string.hex": "ID користувача має бути валідним hex",
-        "any.required": "ID користувача обов'язковий",
+        "string.base": "User ID must be a string",
+        "string.length": "User ID must be 24 characters",
+        "string.hex": "User ID must be a valid hex string",
+        "any.required": "User ID is required",
       }),
   }),
 };

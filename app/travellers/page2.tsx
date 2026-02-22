@@ -13,10 +13,9 @@ export default function TravellersPage() {
   const [loading, setLoading] = useState(false);
 
   const LIMIT = 4;
+  const loadMoreBtnRef = useRef<HTMLButtonElement>(null);
 
-  const listWrapperRef = useRef<HTMLDivElement>(null);
-  const prevHeightRef = useRef(0);
-
+  // Визначаємо початковий ліміт один раз для першого рендеру  
   const [initialLimit] = useState(() => {
     if (typeof window !== "undefined") {
       const width = window.innerWidth;
@@ -24,52 +23,29 @@ export default function TravellersPage() {
     }
     return 8;
   });
-
+  
   // Початкове завантаження
   useEffect(() => {
-    async function loadTravellers() {
-      setLoading(true);
-      try {
-        const data = await getTravellers({ page: 1, limit: initialLimit });
-        setTravellers(data.items);
-        setHasMore(data.hasMore);
-        setPage(1);
-      } catch (err) {
-        console.error("Failed to load travellers", err);
-      } finally {
-        setLoading(false);
-      }
+  async function loadTravellers() {
+    setLoading(true);
+    try {
+      const data = await getTravellers({ page: 1, limit: initialLimit });
+      setTravellers(data.items);
+      setHasMore(data.hasMore);
+      setPage(1);
+    } catch (err) {
+      console.error("Failed to load travellers", err);
+    } finally {
+      setLoading(false);
     }
+  }
 
-    loadTravellers();
+  loadTravellers();
   }, [initialLimit]);
-
-  // Скрол на різницю висоти після loadMore
-  useEffect(() => {
-    if (!listWrapperRef.current) return;
-
-    const newHeight = listWrapperRef.current.scrollHeight;
-
-    if (prevHeightRef.current !== 0 && newHeight > prevHeightRef.current) {
-      const heightDiff = newHeight - prevHeightRef.current;
-
-      window.scrollBy({
-        top: heightDiff,
-        behavior: "smooth",
-      });
-    }
-
-    prevHeightRef.current = newHeight;
-  }, [travellers]);
-
-  async function handleLoadMore() {
+    
+    // Показати ще
+    async function handleLoadMore() {
     const nextPage = page + 1;
-
-    // запам'ятовуємо висоту ДО підвантаження
-    if (listWrapperRef.current) {
-      prevHeightRef.current = listWrapperRef.current.scrollHeight;
-    }
-
     setLoading(true);
 
     try {
@@ -77,6 +53,13 @@ export default function TravellersPage() {
       setTravellers(prev => [...prev, ...data.items]);
       setHasMore(data.hasMore);
       setPage(nextPage);
+
+      // Автоскрол після підвантаження
+      setTimeout(() => {
+        if (loadMoreBtnRef.current) {
+          loadMoreBtnRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 100); // невелика затримка, щоб DOM оновився
     } catch (err) {
       console.error("Failed to load more travellers", err);
     } finally {
@@ -88,12 +71,11 @@ export default function TravellersPage() {
     <section className={css.section}>
       <h1 className={css.title}>Мандрівники</h1>
 
-      <div ref={listWrapperRef}>
-        <TravellersList travellers={travellers} />
-      </div>
+      <TravellersList travellers={travellers} />
 
       {hasMore && (
         <button
+          ref={loadMoreBtnRef}
           className={css.loadMoreBtn}
           onClick={handleLoadMore}
           disabled={loading}
@@ -104,3 +86,7 @@ export default function TravellersPage() {
     </section>
   );
 }
+    
+    
+  
+    
